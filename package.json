@@ -1,5 +1,5 @@
 {
-    "name": "Ksense-healthcare-assessment",
+    "name": "ksense-healthcare-assessment",
     "version": "1.0.0",
     "description": "Healthcare API Assessment",
     "main": "index.js",

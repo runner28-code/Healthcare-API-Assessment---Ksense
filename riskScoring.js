@@ -29,21 +29,21 @@ function isValidNumber(value) {
 // Calculate Blood Pressure Risk Score
 export function calculateBloodPressureRisk(bloodPressure) {
     if(!bloodPressure || typeof bloodPressure !== 'object') {
-        return 3;
+        return 0;
     }
 
     const systolic = bloodPressure.systolic;
     const diastolic = bloodPressure.diastolic;
 
     if(isInvalidOrMissing(systolic) || isInvalidOrMissing(diastolic)) {
-        return 3;
+        return 0;
     }
 
     const sysNum = parseFloat(systolic);
     const diaNum = parseFloat(diastolic);
 
     if(isNaN(sysNum) || isNaN(diaNum) || !isFinite(sysNum) || !isFinite(diaNum)) {
-        return 3;
+        return 0;
     }
 
     if(sysNum < 120 && diaNum < 80) {
@@ -68,40 +68,40 @@ export function calculateBloodPressureRisk(bloodPressure) {
 //Calculate Temperature Risk Score
 export function calculateTemperatureRisk(temperature) {
     if(isInvalidOrMissing(temperature)) {
-        return 3;
+        return 0;
     }
 
     const tempNum = parseFloat(temperature);
 
     if(isNaN(tempNum) || !isFinite(tempNum)) {
-        return 3;
-    }
-
-    if(tempNum <= 99.0) {
         return 0;
     }
 
-    if(tempNum >= 99.1 && tempNum <= 100.9) {
+    if(tempNum <= 99.5) {
+        return 0;
+    }
+
+    if(tempNum >= 99.6 && tempNum <= 100.9) {
         return 1;
     }
 
-    if(tempNum > 101.0) {
+    if(tempNum >= 101.0) {
         return 2;
     }
 
-    return 3;
+    return 2;
 }
 
 //Calculate Age Risk Score
 export function calculateAgeRisk(age) {
     if(isInvalidOrMissing(age)) {
-        return 3;
+        return 0;
     }
 
     const ageNum = parseFloat(age);
 
     if(isNaN(ageNum) || !isFinite(ageNum)) {
-        return 3;
+        return 0;
     }
 
     if(ageNum <= 39) {
@@ -112,11 +112,11 @@ export function calculateAgeRisk(age) {
         return 1;
     }
 
-    if(ageNum >= 65) {
+    if(ageNum > 65) {
         return 2;
     }
 
-    return 3;
+    return 2;
 }
 
 //Calculate Total Risk Score
