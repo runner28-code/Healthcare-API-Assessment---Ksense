@@ -69,12 +69,14 @@ export async function fetchAllPatients() {
     while(hasNext) {
         try{
             const response = await makeRequestWithRetry(`/patients?page=${page}&limit=20`);
-            const data = await response.json();       
-            if(data.patients && Array.isArray(data.partients)) {
-                allPatients.push(...data.patients);
+            const data = await response.json();
+            console.log("Fetched patients:", data["data"]);
+            if(data["data"] && Array.isArray(data["data"])) {
+                allPatients.push(...data["data"]);
             }
-
-            hasNext = data.pagination?.hasNext || false;
+            console.log("Pagination Info:", data["pagination"].page);
+            hasNext = data["pagination"].hasNext;
+            console.log("hasNext:", hasNext);
             page++;
 
             if(hasNext) {
@@ -84,7 +86,7 @@ export async function fetchAllPatients() {
             throw error;
         }
     }
-
+    console.log("allPatients Array:", allPatients);
     return allPatients;
 }
 

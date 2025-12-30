@@ -25,13 +25,25 @@ function isInvalidOrMissing(value) {
 }
 
 function hasDataQualityIssue(patient) {
-    if(!patient.bloodPressure || typeof patient.bloodPressure !== 'object') {
+    if(!patient.blood_pressure)    return true;
+    const parts = patient.blood_pressure.split('/');
+    if(parts.length !== 2) return true;
+    const sysNum = Number(parts[0].trim());
+    const diaNum = Number(parts[1].trim());
+    if(sysNum === 0 || diaNum === 0 ) return true; 
+    if(isNaN(sysNum) || isNaN(diaNum) || !isFinite(sysNum) || !isFinite(diaNum)) {
         return true;
     }
-    if(isInvalidOrMissing(patient.bloodPressure.systolic) || isInvalidOrMissing(patient.bloodPressure.diastolic)) {
+
+    const tempNum = parseFloat(patient.temperature);
+    if(isNaN(tempNum) || !isFinite(tempNum)) {
         return true;
     }
     if(isInvalidOrMissing(patient.temperature)) {
+        return true;
+    }
+    const ageNum = parseFloat(patient.age);
+    if(isNaN(ageNum) || !isFinite(ageNum)) {
         return true;
     }
     if(isInvalidOrMissing(patient.age)) {
@@ -50,19 +62,21 @@ function hasFever(patient) {
         return false;
     }
 
-    return tempNum >= 99.0;
+    return tempNum >= 99.6;
 }
 
 export function processPatients(patients) {
+    console.log("ENTER");
     const highRiskPatients = [];
     const feverPatients = [];
     const dataQualityIssues = [];
 
     patients.forEach((patient, index) => {
-        if(!patient || !patient.id) {
+        if(!patient || !patient.patient_id) {
             return;
         }
-        const patientId = String(patient.id);
+        const patientId = String(patient.patient_id);
+        console.log("PatientID", patientId);
         const totalRisk = calculateTotalRisk(patient);
 
         if(totalRisk >= 4) {

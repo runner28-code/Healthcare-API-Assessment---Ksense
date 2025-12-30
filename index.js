@@ -1,17 +1,18 @@
-import { fetchAllPatients } from "./apiClient";
-import { processPatients} from "./patientProcessor";
+import { fetchAllPatients, submitAssessment } from "./apiClient.js";
+import { processPatients} from "./patientProcessor.js";
 
 async function main() {
     try {
         //Fetch all patients
         const patients = await fetchAllPatients();
-
+        console.log(`Fetched ${patients.length} patients`);
         if(!patients || patients.length === 0) {
             throw new Error('No patients found');
         }
         //process patients
         const results = processPatients(patients);
-        //submit results
+        console.log('Processed Results:', results);
+        // submit results
         const submissionResult = await submitAssessment(results);
 
         //Display the results
