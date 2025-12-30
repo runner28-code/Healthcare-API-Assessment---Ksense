@@ -68,7 +68,37 @@ export async function fetchAllPatients() {
 
     while(hasNext) {
         try{
-            
+            const response = await makeRequestWithRetry(`/patients?page=${page}&limit=20`);
+            const data = await response.json();       
+            if(data.patients && Array.isArray(data.partients)) {
+                allPatients.push(...data.patients);
+            }
+
+            hasNext = data.pagination?.hasNext || false;
+            page++;
+
+            if(hasNext) {
+                await sleep(200);
+            }
+        }catch(error) {
+            throw error;
         }
+    }
+
+    return allPatients;
+}
+
+//submit results
+export async function submitAssessment(results) {
+    try{
+        const response = await makeRequestWithRetry('/submit-assessment', {
+            method: 'POST',
+            body: JSON.stringify(results),
+        });
+
+        const data = await response.json();
+        return data;
+    }catch (error) {
+        throw error;
     }
 }
