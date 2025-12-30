@@ -3,7 +3,7 @@
  */
 
 export const CONFIG = {
-    API_KEY: 'ak_67d1b0059e62f7c0785487e7c13ad4f41a17217cc62181',
+    API_KEY: 'ak_6fb3bed590e63fc97b5487c7c13ad041301a17217cc62181',
     BASE_URL: 'https://assessment.ksensetech.com/api',
     MAX_RETRIES: 5,
     RETRY_DELAY_MS: 1000, // Initial delay
